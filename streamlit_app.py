@@ -28,4 +28,4 @@ fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon"
 streamlit.text(fruityvice_response.json()) #just print data to the screen
 
 streamlit.text(pandas.json_normalize(fruityvice_response.json())  #normalized version 
-srteamlit.dataframe(pandas.json_normalize(fruityvice_response.json()) #df
+#srteamlit.dataframe(pandas.json_normalize(fruityvice_response.json()) #df
