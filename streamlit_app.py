@@ -30,4 +30,4 @@ streamlit.text(fruityvice_response.json()) #just print data to the screen
 fruityvice_normalized = pandas.json_normalize(fruityvice_response.json()) #pandas used to normalize
 streamlit.text( fruityvice_normalized )  # just print data to the screen
 streamlit.dataframe( fruityvice_normalized ) #wsadza w tabelke
-streamlit.dataframe( fruityvice_response )#test
+streamlit.dataframe( fruityvice_response.json() )#test
