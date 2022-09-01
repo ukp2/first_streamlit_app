@@ -60,8 +60,8 @@ try:
   if not fruit_choice:
             streamlit.error("Please select a fruit")
   else:
-      back_from _function = get_fruityvice_data(fruit_choice)
-      streamlit.dataframe(back_from _function)
+      back_from_function = get_fruityvice_data(fruit_choice)
+      streamlit.dataframe(back_from_function)
 
 #don't run anything past here while we troubleshoot
 streamlit.stop()
