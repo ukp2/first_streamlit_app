@@ -46,14 +46,12 @@ streamlit.dataframe(fruits_to_show) # old: streamlit.dataframe(my_fruit_list)
 #     streamlit.dataframe( fruityvice_normalized )
 # except URLError as e:
 #   streamlit.error()
-
-    ## New section - Function
+      ## New section - Function
 #create the repetable code block (called function)
 def get_fruityvice_data(this_fruit_choice):
   fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+fruit_choice)
   fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
   return fruityvice_normalized
-
 streamlit.header("Fruityvice Fruit Advice!")
 try:
   fruit_choice = streamlit.text_input('What fruit would you like information about?')
@@ -65,24 +63,32 @@ try:
 except URLError as e:
   streamlit.error()
 
+#import snowflake.connector - 2 wersje
+      ##before
+# my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+# my_cur = my_cnx.cursor()
+# my_cur.execute("SELECT * from fruit_load_list")
+# my_data_row = my_cur.fetchall()  #fetchall
+# streamlit.header("The fruit load list contains:")
+# streamlit.dataframe(my_data_row)
+
+      ##with function and button that calls function and load data:
+#function
+streamlit.header("The fruit load list contains:")    
+def get_fruit_load_list():
+      with my_cnx.cursor() as my_cur:
+            my_cur.execute("SELECT * from fruit_load_list")
+            return my_cur.fetchall()
+ #add a button
+ if streamlit.button('Get Fruit Load List'):
+      my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+      my_data_row = get_fruit_load_list()
+      streamlit.dataframe(my_data_row)
+
+      
+      
 #don't run anything past here while we troubleshoot
 streamlit.stop()
-
-#import snowflake.connector
-
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-my_cur = my_cnx.cursor()
-
-my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()") # metadata
-my_data_row_0 = my_cur.fetchone() #fetchone
-streamlit.text("Snowflake metadata:")
-streamlit.text(my_data_row_0)
-
-my_cur.execute("SELECT * from fruit_load_list")
-my_data_row = my_cur.fetchall()  #fetchall
-streamlit.header("The fruit load list contains:")
-# streamlit.text(my_data_row)
-streamlit.dataframe(my_data_row)
 
 #Allow end user to add an fruit to the list
 add_my_fruit = streamlit.text_input('What fruit would you like to add?','jackfruit')
@@ -90,3 +96,10 @@ streamlit.write('Thanks for adding ', add_my_fruit)
 
 #test
 my_cur.execute("insert into pc_rivery_db.public.FRUIT_LOAD_LIST VALUES ('test_streamlit')" )
+
+
+## metadata info
+# my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()") # metadata
+# my_data_row_0 = my_cur.fetchone() #fetchone
+# streamlit.text("Snowflake metadata:")
+# streamlit.text(my_data_row_0)
